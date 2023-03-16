@@ -38,18 +38,7 @@ public class Login extends Activity {
             Toast.makeText(this, "Khởi tạo cơ sở dữ liệu không thành công!!!", Toast.LENGTH_SHORT).show();
         }
     }
-    public void insertDB(String username, String password) {
-        try {
-            initDB();
-            db = openOrCreateDatabase(dtbase, MODE_PRIVATE, null);
-            String sql = "INSERT INTO dbUser(Username, PassWord) values (?, ?)";
-            db.execSQL(sql, new String[]{username, password});
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "lỗi ở đây", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 
     public boolean isTableExists(SQLiteDatabase db, String tableName) {
         Cursor cursor = db.rawQuery("SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
