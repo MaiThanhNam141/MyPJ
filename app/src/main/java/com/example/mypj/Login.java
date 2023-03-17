@@ -1,14 +1,12 @@
 package com.example.mypj;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,9 +25,9 @@ public class Login extends Activity {
         try{
             if(!isTableExists(db,"dbUser"))
             {
-                sql = "CREATE TABLE dbUser(id_user INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,Username TEXT NOT NULL, PassWord TEXT NOT NULL)";
+                sql = "CREATE TABLE dbUser(id_user INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,Username TEXT NOT NULL, PassWord TEXT NOT NULL, Tien INT)";
                 db.execSQL(sql);
-                sql= "INSERT INTO dbUser(Username, PassWord) values ('admin','1')";
+                sql = "INSERT INTO dbUser(Username, PassWord, Tien) values ('admin','1','0')";
                 db.execSQL(sql);
                 db.close();
             }
@@ -38,7 +36,6 @@ public class Login extends Activity {
             Toast.makeText(this, "Khởi tạo cơ sở dữ liệu không thành công!!!", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     public boolean isTableExists(SQLiteDatabase db, String tableName) {
         Cursor cursor = db.rawQuery("SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '" + tableName + "'", null);
@@ -78,11 +75,13 @@ public class Login extends Activity {
         LoginButton = (Button) findViewById(R.id.loginButton);
         SignupButton = (Button) findViewById(R.id.signupButton);
         initDB();
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = LoginUsername.getText().toString();
                 String password = LoginPassword.getText().toString();
+
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(Login.this, "Vui lòng điền thông tin tài khoản, mật khẩu", Toast.LENGTH_LONG).show();
                 } else {
@@ -103,5 +102,9 @@ public class Login extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    public String getUsername() {
+        return LoginUsername.getText().toString();
     }
 }

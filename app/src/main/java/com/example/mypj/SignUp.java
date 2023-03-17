@@ -21,7 +21,7 @@ public class SignUp extends Activity {
     public void insertDB(String username, String password) {
         try {
             db = openOrCreateDatabase(Login.dtbase, MODE_PRIVATE, null);
-            String sql = "INSERT INTO dbUser(Username, PassWord) values (?, ?)";
+            String sql = "INSERT INTO dbUser(Username, PassWord,Tien) values (?, ?,0)";
             db.execSQL(sql, new String[]{username, password});
             db.close();
             Toast.makeText(this, "Khởi tạo thành công", Toast.LENGTH_SHORT).show();
@@ -48,7 +48,9 @@ public class SignUp extends Activity {
                 username = SignupUsername.getText().toString();
                 password = SignupPassword.getText().toString();
                 repeatpassword = SignupRepeatPassword.getText().toString();
-                if (!password.equals(repeatpassword)) {
+                if (username.isEmpty() || password.isEmpty())
+                    Toast.makeText(SignUp.this, "Vui lòng điền thông tin tài khoản, mật khẩu", Toast.LENGTH_LONG).show();
+                else if (!password.equals(repeatpassword)) {
                     Toast.makeText(SignUp.this, "Mật khẩu và Xác nhận mật khẩu không giống nhau", Toast.LENGTH_SHORT).show();
                 } else {
                     insertDB(username, password);
